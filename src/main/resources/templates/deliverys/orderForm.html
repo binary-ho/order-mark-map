@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div>
+    <h1>★주문하기★</h1>
+</div>
+<div class="contanier">
+    <form action="/deliveryOrder/new" method="post">
+        <div class="form-group" style="margin-bottom:10px;">
+            <label for="username">이름</label>
+            <input type="text" id="username" name="username" placeholder="이름을 입력하시오">
+        </div>
+
+        <div class="form-group" style="margin-bottom:10px;">
+            <label for="menu">음식</label>
+            <input type="text" id="menu" name="menu" placeholder="음식 입력">
+        </div>
+
+        <div class="form-group" style="margin-bottom:10px;">
+            <input style="margin-right: 5px; width:200px; height:20px;" type="text" name="address" id="sample6_address" placeholder=" 내 주소" readonly>
+            <button style="height:20px;" type="button" id="findAddress" onclick="pop();">내 주소 찾기</button>
+        </div>
+
+        <div class="form-group" style="margin-bottom:10px;">
+            <label for="locationX">좌표</label>
+            <input type="text" id="locationX" name="locationX" placeholder="X좌표" readonly>
+            <input type="text" id="locationY" name="locationY" placeholder="Y좌표" readonly>
+        </div>
+
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script>
+            function pop() {
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var addr = ''; // 주소 변수
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+                        document.getElementById("sample6_address").value = addr;
+                        getMap();
+                    }
+                }).open();
+            }
+        </script>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b594309d4435222bf164428d0fec8275&libraries=services"></script>
+        <script>
+            function getMap() {
+                var address = '';
+                address = document.getElementById("sample6_address").value;
+                var geocoder = new kakao.maps.services.Geocoder();
+                geocoder.addressSearch(address, function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        document.getElementById("locationX").value = result[0].x;
+                        document.getElementById("locationY").value = result[0].y;
+                    }
+                });
+            }
+        </script>
+
+
+        <button type="submit">주문하기</button>
+    </form>
+
+</div>
+</body>
+</html>

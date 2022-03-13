@@ -1,19 +1,11 @@
-package com.jinho.ordermarkmap.domain;
+package com.jinho.ordermarkmap.controller;
 
-import javax.persistence.*;
-import javax.persistence.Id;
-
-@Entity
-public class Delivery {
-
-    @Id @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long id;
-
+public class DeliveryForm {
     private String username;
     private String menu;
     private String address;
     private String locationX;
-
+    private String locationY;
 
     public String getAddress() {
         return address;
@@ -39,22 +31,12 @@ public class Delivery {
         this.locationY = locationY;
     }
 
-    private String locationY;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getMenu() {

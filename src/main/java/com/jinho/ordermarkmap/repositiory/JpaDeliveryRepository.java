@@ -15,7 +15,6 @@ public class JpaDeliveryRepository implements DeliveryRepository {
         this.em = em;
     }
 
-
     @Override
     public Delivery save(Delivery delivery) {
         em.persist(delivery);
@@ -24,15 +23,15 @@ public class JpaDeliveryRepository implements DeliveryRepository {
 
     @Override
     public Optional<Delivery> findByUserName(String userName) {
-        List<Delivery> result = em.createQuery("select d from Delivery d where d.userName = :userName", Delivery.class)
-                .setParameter("userName", userName)
+        List<Delivery> result = em.createQuery("select d from Delivery d where d.username = :username", Delivery.class)
+                .setParameter("username", userName)
                 .getResultList();
         return result.stream().findAny();
     }
 
     @Override
     public Optional<Delivery> findByMenu(String menu) {
-        List<Delivery> result = em.createQuery("select d from Delivery d where d.userName = :menu", Delivery.class)
+        List<Delivery> result = em.createQuery("select d from Delivery d where d.menu = :menu", Delivery.class)
                 .setParameter("menu", menu)
                 .getResultList();
         return result.stream().findAny();
@@ -40,7 +39,7 @@ public class JpaDeliveryRepository implements DeliveryRepository {
 
     //TODO: 구현
     @Override
-    public Optional<Delivery> findByLocation(Point point) {
+    public Optional<Delivery> findByAddress(String address) {
         return Optional.empty();
     }
 

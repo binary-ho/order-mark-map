@@ -10,6 +10,6 @@ public interface DeliveryRepository {
     Delivery save(Delivery order);
     Optional<Delivery> findByUserName(String name);
     Optional<Delivery> findByMenu(String name);
-    Optional<Delivery> findByLocation(Point point);
+    Optional<Delivery> findByAddress(String address);
     List<Delivery> findAll();
 }
