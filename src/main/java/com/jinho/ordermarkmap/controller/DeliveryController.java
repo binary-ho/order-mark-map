@@ -1,12 +1,19 @@
 package com.jinho.ordermarkmap.controller;
 
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinho.ordermarkmap.domain.Delivery;
 import com.jinho.ordermarkmap.service.DeliveryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class DeliveryController {
@@ -20,7 +27,7 @@ public class DeliveryController {
 
     @GetMapping("/deliveryOrder/new")
     public String createForm() {
-        return "deliverys/orderForm.html";
+        return "deliveries/orderForm.html";
     }
 
     @PostMapping("/deliveryOrder/new")
@@ -32,18 +39,24 @@ public class DeliveryController {
         order.setLocationX(form.getLocationX());
         order.setLocationY(form.getLocationY());
 
-        //order.setLocationX(form.getLocationX());
-        //System.out.println(order.getAge());
-
         deliveryService.takeOrder(order);
         return "redirect:/";
     }
 
-    @GetMapping("/map")
-    public String mapPage() {
-        return "map.html";
-    }
-
     @GetMapping("/popUp")
     public String findAddressPopUp() {return "popUp.html";}
+
+    /*@GetMapping("/map")
+    public String mapPage() {
+        return "map.html";
+    }*/
+
+
+    @GetMapping("/map")
+    public String sendList(Model model) {
+
+        List<Delivery> deliveries = deliveryService.getAllOrders();
+        model.addAttribute("deliveries", deliveries);
+        return "deliveries/map";
+    }
 }

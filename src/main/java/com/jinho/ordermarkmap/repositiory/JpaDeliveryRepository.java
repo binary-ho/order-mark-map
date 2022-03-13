@@ -45,6 +45,8 @@ public class JpaDeliveryRepository implements DeliveryRepository {
 
     @Override
     public List<Delivery> findAll() {
-        return em.createQuery("select d from Delivery d", Delivery.class).getResultList();
+        List<Delivery> result = em.createQuery("select d from Delivery d", Delivery.class).getResultList();
+        System.out.println("1. " + em.toString());
+        return result;
     }
 }

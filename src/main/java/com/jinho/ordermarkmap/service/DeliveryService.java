@@ -18,8 +18,9 @@ public class DeliveryService {
     }
 
     // 주문하기
+    @Transactional
     public String takeOrder(Delivery delivery) {
-        validateDuplicateOrder(delivery);
+        //validateDuplicateOrder(delivery);
         deliveryRepository.save(delivery);
         return delivery.getAddress();
     }
