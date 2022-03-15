@@ -1,29 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
+    <title>여러개 마커에 이벤트 등록하기1</title>
+
 </head>
 <body>
 <div class="container">
+
     <div>
         <h1>지도 보기</h1>
     </div>
 </div>
 
 <div id="map" style="width:1000px;height:800px;"></div>
-<script th:inline="javascript" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b594309d4435222bf164428d0fec8275"></script>
+<script th:inline="javascript" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b594309d4435222bf164428d0fec8275">
+</script>
 <script>
+    function foo1() {
+        /*<![CDATA[*/
+        let list = "[[${deliveries}]]"
+
+        window.alert(list);
+        //let list2 = JSON.stringify(list);
+        let list2 = list.split('*');
+        window.alert(list2);
+        for(var i = 1; i < list2.length; i++) {
+            window.alert("시작" + list2[i]);
+            let str = list2[i].toString().split('|');
+            for(var j = 0; j < str.length;j++) {
+                window.alert(str[j]);
+            }
+        }
+        //let list3 = JSON.parse('address', list);
+        //let list4 = JSON.parse('address', list2);
+        //window.alert(list4[0]);
+        //window.alert(list3);
+
+        //JSON.parse()
+
+        //window.alert(list.valueOf("address"));
+        //window.alert(list.indexOf("address"));
+        //window.alert(JSON.parse(list));
+
+        //for(var i = 0; i < list.length; i++) {
+            //window.alert(list[i]);
+        //}
+        /*]]>*/
+        foo();
+    }
+    /*const positions = [{
+        content: '<div>카카오</div>',
+        latlng: new kakao.maps.LatLng(33.450705, 126.570677)
+    }];
+    function addItem(name, x, y) {
+
+        positions.push({
+            content: '<div>${name}</div>',
+            latlng: new kakao.maps.LatLng(x, y)
+        });
+    }*/
+    // 가보자구
+    let positions = [{}];
+    /*<![CDATA[*/
+    let deliveries = "[[${deliveries}]]"
+    let delivery = deliveries.split('*');
+    let startingX, startingY;
+    for(var idx = 1; idx < delivery.length; idx++) {
+        //window.alert("시작" + delivery[idx]);
+        let str = delivery[idx].toString().split('|');
+        let address = str[0].toString();
+        positions.push({
+            content: '<div>' + address + '</div>',
+            latlng: new kakao.maps.LatLng(str[1], str[2])
+        });
+        if(idx === 1) {
+            startingX = str[1];
+            startingY = str[2];
+        }
+    }
+    /*]]>*/
 
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
-            center: new kakao.maps.LatLng(37.5548155149997, 126.928442112686), // 지도의 중심좌표
-            level: 5 // 지도의 확대 레벨
+            center: new kakao.maps.LatLng(startingX, startingY), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
         };
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    // 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다
+    /*let positions = [{
+        content: '<div>카카오</div>',
+        latlng: new kakao.maps.LatLng(33.450705, 126.570677)
+    }];*/
+    /*let testString = '될까'
+        positions.push({
+        content: '<div>' + testString + '</div>',
+        latlng: new kakao.maps.LatLng(33.450936, 126.569477)
+    });*/
 
-        // 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다
-
-        /*positions.add({
+    //positions.push()
+    /*positions.add({
             content: '<div>생태연못</div>',
             latlng: new kakao.maps.LatLng(33.450936, 126.569477)
         })
@@ -36,15 +113,11 @@
             latlng: new kakao.maps.LatLng(33.451393, 126.570738)
         })*/
 
-
+    /*
         var positions = [
             {
                 content: '<div>카카오</div>',
                 latlng: new kakao.maps.LatLng(33.450705, 126.570677)
-            },
-            {
-                content: '<div>진호네집</div>',
-                latlng: new kakao.maps.LatLng(37.5548155149997, 126.928442112686)
             },
             {
                 content: '<div>생태연못</div>',
@@ -58,40 +131,40 @@
                 content: '<div>근린공원</div>',
                 latlng: new kakao.maps.LatLng(33.451393, 126.570738)
             }
-        ];
+        ];*/
 
-        for (var i = 0; i < positions.length; i++) {
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: positions[i].latlng // 마커의 위치
-            });
+    for (var i = 0; i < positions.length; i++) {
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: positions[i].latlng // 마커의 위치
+        });
 
-            // 마커에 표시할 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-                content: positions[i].content // 인포윈도우에 표시할 내용
-            });
+        // 마커에 표시할 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content: positions[i].content // 인포윈도우에 표시할 내용
+        });
 
-            // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-            // 이벤트 리스너로는 클로저를 만들어 등록합니다
-            // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-            kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-            kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-        }
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+    }
 
-        // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-        function makeOverListener(map, marker, infowindow) {
-            return function () {
-                infowindow.open(map, marker);
-            };
-        }
+    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+    function makeOverListener(map, marker, infowindow) {
+        return function () {
+            infowindow.open(map, marker);
+        };
+    }
 
-        // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-        function makeOutListener(infowindow) {
-            return function () {
-                infowindow.close();
-            };
-        }
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+    function makeOutListener(infowindow) {
+        return function () {
+            infowindow.close();
+        };
+    }
 
     /* 아래와 같이도 할 수 있습니다 */
     /*

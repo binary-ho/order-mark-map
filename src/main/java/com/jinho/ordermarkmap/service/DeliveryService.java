@@ -1,6 +1,5 @@
 package com.jinho.ordermarkmap.service;
 
-
 import com.jinho.ordermarkmap.domain.Delivery;
 import com.jinho.ordermarkmap.repositiory.DeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ public class DeliveryService {
     // 주문하기
     @Transactional
     public String takeOrder(Delivery delivery) {
-        //validateDuplicateOrder(delivery);
         deliveryRepository.save(delivery);
         return delivery.getAddress();
     }

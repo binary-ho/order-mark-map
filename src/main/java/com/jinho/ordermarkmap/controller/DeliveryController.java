@@ -4,6 +4,10 @@ package com.jinho.ordermarkmap.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jinho.ordermarkmap.domain.Delivery;
 import com.jinho.ordermarkmap.service.DeliveryService;
 
@@ -54,9 +58,17 @@ public class DeliveryController {
 
     @GetMapping("/map")
     public String sendList(Model model) {
-
         List<Delivery> deliveries = deliveryService.getAllOrders();
-        model.addAttribute("deliveries", deliveries);
+        String str = "";
+        for(var itr : deliveries) {
+            str += "*";
+            str += itr.getAddress();
+            str += '|';
+            str += itr.getLocationX();
+            str += '|';
+            str += itr.getLocationY();
+        }
+        model.addAttribute("deliveries", str);
         return "deliveries/map";
     }
 }
